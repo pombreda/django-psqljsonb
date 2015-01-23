@@ -1,5 +1,4 @@
 import json
-import six
 
 from .. import forms, lookups
 from django.core import exceptions
@@ -14,7 +13,7 @@ __all__ = ['JSONBField']
 
 class JSONBField(six.with_metaclass(SubfieldBase, Field)):
     empty_strings_allowed = False
-    description = _('Map of strings to strings')
+    description = _('Store JSON data in a jsonb field')
     default_error_messages = {
         'unserializable_object': _('Could not serialize field to JSON.'),
         'invalid_key': _('Cannot create key named "%(key)s"'),
