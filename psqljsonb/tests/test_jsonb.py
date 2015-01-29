@@ -30,10 +30,7 @@ class JSONBTestCase(TestCase):
                                                     "list": [5, 10, 15],
                                                     "additional_data": {
                                                         "boolean": False,
-                                                        "not_list": {
-                                                            "1": "str_1",
-                                                            "2": "str_2",
-                                                        }
+                                                        "string": "text",
                                                      }
                                                 })  # NOQA
 
@@ -54,9 +51,9 @@ class JSONBTestCase(TestCase):
         self.assertEquals(len(item_qs), 1)
         self.assertEquals(item_qs[0].name, 'Sextus')
 
-    def testWeirdoString(self):
-        item_qs = models.Item.objects.filter(data__json__additional_data__not_list__2='str_2')
-        self.assertEquals(len(item_qs), 0)
+    def testTextString(self):
+        item_qs = models.Item.objects.filter(data__json__additional_data__string='text')
+        self.assertEquals(len(item_qs), 1)
 
     def testHasKey(self):
         item_qs = models.Item.objects.filter(data__json__has_key='additional_data')
