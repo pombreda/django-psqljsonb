@@ -30,37 +30,49 @@ Add the field to your model
         name = models.CharField(max_length=32)
         data = JSONBField()
 
-Querying is straight-forward, just use ``json`` in the query keyword
+Creating JSON data is straight-forward:
+
+    models.Item.objects.create(name='Foo', data={'name': 'Foo',
+                                                "list": [5, 10, 15],
+                                                "additional_data": {
+                                                    "boolean": False,
+                                                    "string": "text",
+                                                 }
+                                            })
+
+The extra query component ``json`` must be used in the query keyword for
+``psqljsonb`` to query within the json structure.
 
     item_qs = models.Item.objects.filter(data__json__additional_data__boolean=True)
 
-``django-psqljsonb`` also supports the ``has_key`` and ``contains`` operators.
+``django-psqljsonb`` also supports the ``has_key`` and ``contains`` operators:
 
 
     item_qs = models.Item.objects.filter(data__json__has_key='additional_data')
 
 
-``contains`` works on every nesting level in the jsonb data
+``contains`` works on every nesting level in the jsonb data:
 
     item_qs = models.Item.objects.filter(data__json__additional_data__contains={
                                             'boolean': False,
                                             'string': 'text'
                                         })
 
-Also lookups by array index work
+Also lookups by array index work:
 
-    item_qs = models.Item.objects.filter(data__json__list_idx__2=15)
+    item_qs = models.Item.objects.filter(data__json__list__2=15)
 
 Limitations
 -----------
 
 All digits in the query keyword are cast as integers. This is ok for most common
 cases, but does not work if you store an object with a key "2" or other digit.
+This is as defined in [RFC 7159](https://tools.ietf.org/html/rfc7159#page-6)
 
 Because ``json`` has a special meaning, you can't use it as a key in your jsonb
 data.
 
 Some array operations are currently not supported. The way escaping works and
-because Python lists are json arrays (not Postgres) arrays, implementing
+because Python lists are json (not Postgres) arrays, implementing
 ``has_keys`` is not currently possible.
 
