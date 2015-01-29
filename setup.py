@@ -5,7 +5,7 @@ from distutils.core import setup
 
 setup(
     name='psqljsonb',
-    version='0.0.1',
+    version='0.0.2',
     description='Django jsonb field for PostgreSQL',
     url='https://github.com/codento/django-psqljsonb/',
     author=u'Markus Törnqvist',
