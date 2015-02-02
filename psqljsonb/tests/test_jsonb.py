@@ -41,7 +41,7 @@ class JSONBTestCase(TestCase):
     def testMain2Count(self):
         self.assertEquals(models.Item.objects.filter(data__json__main='Main 2').count(), 2)
 
-    def testRabid(self):
+    def testBoolean(self):
         item_qs = models.Item.objects.filter(data__json__additional_data__boolean=True)
         self.assertEquals(len(item_qs), 1)
         self.assertEquals(item_qs[0].name, 'Quartus')
